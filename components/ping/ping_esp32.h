@@ -100,11 +100,15 @@ class PingSensorESP32 : public PingSensor {
       mean = total_success_time / received;
     }
 
+#if LWIP_IPV6
     if (IP_IS_V4(&target_addr)) {
+#endif
       ESP_LOGD(TAG, "--- %s ping statistics ---", inet_ntoa(*ip_2_ip4(&target_addr)));
+#if LWIP_IPV6
     } else {
       ESP_LOGD(TAG, "--- %s ping statistics ---", inet6_ntoa(*ip_2_ip6(&target_addr)));
     }
+#endif
     ESP_LOGD(TAG, "%d packets transmitted, %d received, %d%% packet loss, total time %dms avg time %dms", transmitted,
              received, loss, total_time_ms, mean);
 
